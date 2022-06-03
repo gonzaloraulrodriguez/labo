@@ -28,12 +28,13 @@ dapply  <- na.roughfix( dapply )  #tambien imputo los nulos en los datos donde v
 
 #genero el modelo de Random Forest con la libreria ranger
 #notar como la suma de muchos arboles contrarresta el efecto de min.node.size=1
-param  <- list( "num.trees"=       500,  #cantidad de arboles
-                "mtry"=             32,  #cantidad de variables que evalua para hacer un split  sqrt(ncol(dtrain))
-                "min.node.size"=  800,  #tamaño minimo de las hojas
-                "max.depth"=        15   # 0 significa profundidad infinita
+param  <- list( "num.trees"=       2477,  #cantidad de arboles
+                "mtry"=             8,  #cantidad de variables que evalua para hacer un split  sqrt(ncol(dtrain))
+                "min.node.size"=  429,  #tamaño minimo de las hojas
+                "max.depth"=        22   # 0 significa profundidad infinita
               )
-
+#Op B. 2477/8/429/22
+#500/32/800/15
 set.seed(236087) #Establezco la semilla aleatoria
 
 #para preparar la posibilidad de asignar pesos a las clases
@@ -66,7 +67,7 @@ dir.create( "C://Users//Gonzalo//Desktop//MMD//8- Mineria Aplicada a Finanzas//G
 dir.create( "C://Users//Gonzalo//Desktop//MMD//8- Mineria Aplicada a Finanzas//Git Clone//labo///exp//KA2411/", showWarnings = FALSE )
 setwd("C://Users//Gonzalo//Desktop//MMD//8- Mineria Aplicada a Finanzas//Git Clone//labo///exp//KA2411\\")   #Establezco el Working Directory DEL EXPERIMENTO
 
-archivo_salida  <- "KA_411_002.csv"
+archivo_salida  <- "KA_411_tarea_dos_op.csv"
 
 #genero el archivo para Kaggle
 fwrite( entrega, 

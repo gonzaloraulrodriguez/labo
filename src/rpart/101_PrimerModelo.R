@@ -7,21 +7,33 @@ require("rpart")
 require("rpart.plot")
 
 #Aqui se debe poner la carpeta de SU computadora local
-setwd("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone\\labo\\src\\rpart")  #Establezco el Working Directory
+setwd("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone")  #Establezco el Working Directory
 
 #cargo los datos de 202011 que es donde voy a ENTRENAR el modelo
-dtrain  <- fread("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Datasets/paquete_premium_202011.csv")
+dtrain  <- fread("..\\Datasets/paquete_premium_202011.csv")
+
+#cargo los datos de 202011 que es donde voy a ENTRENAR el modelo
+dtrain  <- fread("..\\Datasets/paquete_premium_202011.csv")
 
 #genero el modelo,  aqui se construye el arbol
 modelo  <- rpart("clase_ternaria ~ .",  #quiero predecir clase_ternaria a partir de el resto de las variables
                  data = dtrain,
                  xval=0,
+
                  cp=        -944367597800102,   #esto significa no limitar la complejidad de los splits #prueba -1
                  minsplit=  2140,     #minima cantidad de registros para que se haga el split (80)M90 Prueba 300 
                  minbucket=  524,     #tamaño minimo de una hoja (1)M10
                  maxdepth=   20 )    #profundidad maxima del arbol (4)M5
 
 #con las primeras pruebas (-1,1000,355,6)
+
+                 cp=        -0.3,   #esto significa no limitar la complejidad de los splits
+                 minsplit=  90,     #minima cantidad de registros para que se haga el split (80)M90
+                 minbucket=  10,     #tamaño minimo de una hoja (1)M10
+                 maxdepth=   5 )    #profundidad maxima del arbol (4)M5
+
+
+
 #grafico el arbol
 prp(modelo, extra=101, digits=5, branch=1, type=4, varlen=0, faclen=0)
 
@@ -29,7 +41,8 @@ prp(modelo, extra=101, digits=5, branch=1, type=4, varlen=0, faclen=0)
 #Ahora aplico al modelo  a los datos de 202101  y genero la salida para kaggle
 
 #cargo los datos de 202011, que es donde voy a APLICAR el modelo
-dapply  <- fread("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Datasets/paquete_premium_202101.csv")
+dapply  <- fread("..\\Datasets/paquete_premium_202101.csv")
+dapply  <- fread("..\\Datasets/paquete_premium_202101.csv")
 
 #aplico el modelo a los datos nuevos
 prediccion  <- predict( modelo, dapply , type = "prob")
@@ -48,9 +61,17 @@ entrega  <- dapply[   , list(numero_de_cliente, Predicted) ] #genero la salida
 
 #genero el archivo para Kaggle
 #creo la carpeta donde va el experimento
+<<<<<<< HEAD
 dir.create( "C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone\\labo\\exp/") 
 dir.create( "C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone\\labo\\exp/KA2001") 
 
 fwrite( entrega, 
         file= "C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone\\labo\\exp//KA2001/K101_001.csv", 
+=======
+dir.create( "C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\labo\\exp/") 
+dir.create( "C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\labo\\exp/KA2001") 
+
+fwrite( entrega, 
+        file= "C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\labo\\exp//KA2001/K101_001.csv", 
+>>>>>>> 651be16 (prueba)
         sep= "," )

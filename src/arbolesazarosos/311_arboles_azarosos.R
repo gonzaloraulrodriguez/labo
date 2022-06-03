@@ -22,11 +22,11 @@ dapply  <- fread("C:\\Users\\Gonzalo\\Desktop\\MMD\\Datasets/paquete_premium_202
 campos_buenos  <- setdiff(  colnames(dtrain) ,  c("clase_ternaria") )
 
 param_buenos  <- list( "cp"=         -1,
-                       "minsplit"=  300,
-                       "minbucket"= 150,
-                       "maxdepth"=    6 )
+                       "minsplit"=  850, 
+                       "minbucket"= 335,
+                       "maxdepth"=    6 ) #Inicialmente -1,300,150,6
 
-num_trees         <-  20    #voy a generar 20 arboles, a mas arboles mas tiempo de proceso y MEJOR MODELO
+num_trees         <-  50    #voy a generar 20 arboles, a mas arboles mas tiempo de proceso y MEJOR MODELO
 feature_fraction  <-   0.5  #entreno cada arbol con solo 50% de las variables variables
 
 set.seed(236087) #Establezco la semilla aleatoria, cambiar por SU primer semilla
@@ -100,6 +100,6 @@ dir.create( "C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\labo\\exp\\KA2101/", s
 
 #grabo el archivo para Kaggle
 fwrite( entrega, 
-        file= "C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\labo\\exp\\KA2101/K311_001.csv", 
+        file= "C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\labo\\exp\\KA2101/K311_002.csv", 
         sep= "," )
 

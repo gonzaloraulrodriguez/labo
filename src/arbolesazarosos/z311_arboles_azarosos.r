@@ -21,10 +21,10 @@ dapply  <- fread("./datasets/paquete_premium_202101.csv")
 #Establezco cuales son los campos que puedo usar para la prediccion
 campos_buenos  <- setdiff(  colnames(dtrain) ,  c("clase_ternaria") )
 
-param_buenos  <- list( "cp"=         -1,
-                       "minsplit"=  300,
-                       "minbucket"= 150,
-                       "maxdepth"=    6 )
+param_buenos  <- list( "cp"=         -944367597800102,
+                       "minsplit"=  2140,
+                       "minbucket"= 524,
+                       "maxdepth"=    20 )
 
 num_trees         <-  20    #voy a generar 20 arboles, a mas arboles mas tiempo de proceso y MEJOR MODELO
 feature_fraction  <-   0.5  #entreno cada arbol con solo 50% de las variables variables

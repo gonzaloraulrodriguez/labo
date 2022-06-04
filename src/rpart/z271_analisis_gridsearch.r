@@ -7,10 +7,11 @@ require("rpart")
 require("rpart.plot")
 
 #Aqui se debe poner la carpeta de SU computadora local
-setwd("D:\\gdrive\\Austral2022R\\")  #Establezco el Working Directory
+setwd("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone\\labo\\src\\rpart")  #Establezco el Working Directory
 
 #cargo la salida del Grid Seach, verifique que corresponda a la carpeta donde dejó el resultado
-dtrain  <- fread("./labo/exp/HT2020/gridsearch.txt")
+dtrain  <- fread("gridsearch_prueba.txt")
+dtrain = unique(dtrain)
 
 #genero el modelo,  aqui se construye el arbol
 #este sera un arbol de REGRESION ya que la variable objetivo, ganancia_promedio,  es una variable continua

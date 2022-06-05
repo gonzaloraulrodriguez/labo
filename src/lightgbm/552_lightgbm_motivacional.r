@@ -59,7 +59,11 @@ dataset  <- fread("../datasets/paquete_premium.csv", stringsAsFactors= TRUE) #_p
 # b1_df = data.frame(unclass(summary(b1)), check.names = FALSE, stringsAsFactors = FALSE)
 # cont_df = data.frame(unclass(summary(cont)), check.names = FALSE, stringsAsFactors = FALSE)
 
+<<<<<<< HEAD
 >>>>>>> 651be16 (prueba)
+=======
+>>>>>>> 08da12797827cabda4405bcf4e20cc7d7f09620b
+>>>>>>> 4541cc1be6e1bc1d8a061d505a3ec727ede9351e
 
 #paso la clase a binaria que tome valores {0,1}  enteros
 #set trabaja con la clase  POS = { BAJA+1, BAJA+2 } 
@@ -77,7 +81,11 @@ dtrain  <- lgb.Dataset( data= data.matrix(  dataset[ , campos_buenos, with=FALSE
 <<<<<<< HEAD
 =======
 #parámetro
+<<<<<<< HEAD
 >>>>>>> 651be16 (prueba)
+=======
+>>>>>>> 08da12797827cabda4405bcf4e20cc7d7f09620b
+>>>>>>> 4541cc1be6e1bc1d8a061d505a3ec727ede9351e
 
 #genero el modelo con los parametros por default
 #estos hiperparametros  salieron de una Optmizacion Bayesiana
@@ -117,7 +125,11 @@ dapply  <- fread("../datasets/paquete_premium_202101.csv") #
 # dapply[is.na(get('Master_mlimitecompra')),Master_mlimitecompra:=median_m]
 # dapply[is.na(get('Visa_mlimitecompra')),Visa_mlimitecompra:=median_v]
 # dapply[ , tarjetas_limite_suma := ifelse(Master_mlimitecompra+Visa_mlimitecompra<=680000, 1L, 0L)]
+<<<<<<< HEAD
 >>>>>>> 651be16 (prueba)
+=======
+>>>>>>> 08da12797827cabda4405bcf4e20cc7d7f09620b
+>>>>>>> 4541cc1be6e1bc1d8a061d505a3ec727ede9351e
 
 #aplico el modelo a los datos nuevos
 prediccion  <- predict( modelo, 

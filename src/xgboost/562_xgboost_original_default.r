@@ -72,10 +72,10 @@ EstimarGanancia_xgboost  <- function( x )
                           alpha=                0.0,  #por ahora, lo dejo fijo, equivalente a  lambda_l1
                           lambda=               0.0,  #por ahora, lo dejo fijo, equivalente a  lambda_l2
                           subsample=            1.0,  #por ahora, lo dejo fijo
-                          tree_method=       "hist",  # histograma
-                          grow_policy=  "lossguide",  # lossguide
-                          max_depth=            0,    # NO lo limito por altura
+                          tree_method=       "auto",  #por ahora lo dejo fijo, pero ya lo voy a cambiar a "hist"
+                          grow_policy=  "depthwise",  #ya lo voy a cambiar a "lossguide"
                           max_bin=            256,    #por ahora fijo
+                          max_leaves=           0,    #ya lo voy a cambiar
                           scale_pos_weight=     1.0   #por ahora, lo dejo fijo
                         )
 
@@ -121,19 +121,18 @@ EstimarGanancia_xgboost  <- function( x )
 #Aqui se debe poner la carpeta de la computadora local
 setwd("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone")   #Establezco el Working Directory
 
-
 #cargo el dataset donde voy a entrenar el modelo
 dataset  <- fread("../datasets/paquete_premium_202011.csv")
 
 #creo la carpeta donde va el experimento
 # HT  representa  Hiperparameter Tuning
 dir.create( "labo/exp/",  showWarnings = FALSE ) 
-dir.create( "labo/exp/HT5720/", showWarnings = FALSE )
-setwd("labo/exp/HT5720/")   #Establezco el Working Directory DEL EXPERIMENTO
+dir.create( "labo/exp/HT5620/", showWarnings = FALSE )
+setwd("labo/exp/HT5620/")   #Establezco el Working Directory DEL EXPERIMENTO
 
 
 #en estos archivos quedan los resultados
-klog        <- "HT572.txt"
+klog        <- "HT562.txt"
 
 
 GLOBAL_iteracion  <- 0   #inicializo la variable global
@@ -145,11 +144,8 @@ if( file.exists(klog) )
   GLOBAL_iteracion  <- nrow( tabla_log )
 }
 
-
-
 #paso la clase a binaria que tome valores {0,1}  enteros
 dataset[ , clase01 := ifelse( clase_ternaria=="BAJA+2", 1L, 0L) ]
-
 
 #los campos que se van a utilizar
 campos_buenos  <- setdiff( colnames(dataset), c("clase_ternaria","clase01") )
@@ -158,12 +154,11 @@ campos_buenos  <- setdiff( colnames(dataset), c("clase_ternaria","clase01") )
 dtrain  <- xgb.DMatrix( data=  data.matrix(  dataset[ , campos_buenos, with=FALSE]),
                         label= dataset$clase01 )
 
-
 #llamo con los parametros por default
 x  <- list( eta=               0.3,
             colsample_bytree=  1.0,
             min_child_weight=  1.0,
-            max_leaves=       20,
+            max_depth=         6,
             prob_corte=        1/60
           )
 

@@ -30,19 +30,23 @@ dtrain  <- lgb.Dataset( data= data.matrix(  dataset[ , campos_buenos, with=FALSE
 
 #genero el modelo con los parametros por default
 modelo  <- lgb.train( data= dtrain,
-                      param= list( objective=        "binary",
+                      param= list( objective = "binary",
                                    metric = "custom",
-                                   max_bin=             31,
-                                   max_depth = -1,
-                                   learning_rate=        0.0100615613448411,
-                                   num_iterations=      478,
-                                   num_leaves=          916,
-                                   feature_fraction=     0.515143130129051,
-                                   min_data_in_leaf=  4431,
+                                   first_metric_only = TRUE,
+                                   boost_from_average = TRUE,
+                                   feature_pre_filter = FALSE,
                                    verbosity = -100,
                                    min_gain_to_split = 0,
-                                   seed=            236087 )  )
-
+                                   lambda_l1 = 0,
+                                   lambda_l2 = 0,
+                                   num_iterations = 106,
+                                   force_row_wise = TRUE,
+                                   learning_rate = 0.1,
+                                   feature_fraction = 1,
+                                   min_data_in_leaf = 20,
+                                   max_depth = -1,
+                                   num_leaves = 31,
+                                   seed = 236087 ))
 
 #aplico el modelo a los datos sin clase
 dapply  <- fread("../datasets/paquete_premium_202101.csv")
@@ -58,11 +62,11 @@ prediccion  <- predict( modelo,
 
 #Genero la entrega para Kaggle
 entrega  <- as.data.table( list( "numero_de_cliente"= dapply[  , numero_de_cliente],
-                                 "Predicted"= as.integer(prediccion > 0.0168961257227706 ) )  ) #genero la salida
+                                 "Predicted"= as.integer(prediccion > 1/60 ) )  ) #genero la salida
 
 dir.create( "labo/exp/",  showWarnings = FALSE ) 
 dir.create( "labo/exp/KA2512/", showWarnings = FALSE )
-archivo_salida  <- "labo/exp/KA2512/KA_512_tarea_dos_op.csv"
+archivo_salida  <- "labo/exp/KA2512/KA_512_tarea_dos.csv"
 
 #genero el archivo para Kaggle
 fwrite( entrega, 

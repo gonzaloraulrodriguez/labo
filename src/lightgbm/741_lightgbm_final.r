@@ -18,9 +18,9 @@ require("lightgbm")
 setwd("~/buckets/b1/")   #Establezco el Working Directory
 
 
-kprefijo       <- "KA741"
-ksemilla_azar  <- 102191  #Aqui poner la propia semilla
-kdataset       <- "./datasets/paquete_premium_ext_721.csv.gz"
+kprefijo       <- "KA741_prueba20220621"
+ksemilla_azar  <- 236087  #Aqui poner la propia semilla
+kdataset       <- "./datasets/paquete_premium_ext_721_L1.csv.gz"
 
 #donde entrenar
 kfinal_mes_desde    <- 201912        #mes desde donde entreno

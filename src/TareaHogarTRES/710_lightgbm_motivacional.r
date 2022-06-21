@@ -21,30 +21,9 @@ require("lightgbm")
 setwd("~/buckets/b1/")   #Establezco el Working Directory
 
 #cargo el dataset donde voy a entrenar
-dataset  <- fread("./datasets/paquete_premium.csv.gz", stringsAsFactors= TRUE)
 
+dataset  <- fread("./datasets/paquete_premium_ext_721_L1_2.csv.gz", stringsAsFactors= TRUE)
 
-#--------------------------------------
-
-#ordeno el dataset por  < numero_de_cliente, foto_mes > ´para calcular los lags
-setorder( dataset, numero_de_cliente, foto_mes )
-
-#creo los campos lags de orden 1
-columnas_lag  <- setdiff( colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria") )
-nlag  <- 1      #orden del lag
-sufijo  <- "_lag1"
-dataset[ , paste0( columnas_lag, sufijo) := shift( .SD, nlag, NA, "lag"), 
-           by= numero_de_cliente, 
-           .SDcols= columnas_lag ]
-
-#creo los delta lags
-sufijodelta  <- paste0( "_delta", nlag )
-
-#uso un espantoso for para crear los delta lags
-for( vcol in columnas_lag )
-{
-  dataset[,  paste0(vcol, sufijodelta) := get( vcol)  - get(paste0( vcol, sufijo))]
-}
 
 #--------------------------------------
 
@@ -79,20 +58,30 @@ dtrain  <- lgb.Dataset( data= data.matrix(  dataset[ train==1L, campos_buenos, w
 #estos hiperparametros  salieron de una laaarga Optmizacion Bayesiana
 modelo  <- lgb.train( data= dtrain,
                       param= list( objective=        "binary",
+                                   metric= "custom",
                                    max_bin=              31,
-                                   learning_rate=         0.0300696989,
-                                   num_iterations=      567,
-                                   num_leaves=         1002,
-                                   min_data_in_leaf=   6263,
-                                   feature_fraction=      0.9100319271,
-                                   seed=             236087
+                                   seed=             236087,
+                                   first_metric_only = TRUE,
+                                   boost_from_average = TRUE,
+                                   feature_pre_filter = FALSE,
+                                   verbosity = -100,
+                                   min_gain_to_split = 0,
+                                   lambda_l1 = 0,
+                                   lambda_l2 = 0,
+                                   num_iterations = 1262,
+                                   force_row_wise = TRUE,
+                                   learning_rate = 0.0100603206161176,
+                                   feature_fraction = 0.779999539394118,
+                                   min_data_in_leaf = 19086,
+                                   max_depth = -1,
+                                   num_leaves = 632,
                                   )
                     )
 #236087, 236107, 236111, 236129, 236143
 #--------------------------------------
 #ahora imprimo la importancia de variables
 tb_importancia  <- as.data.table( lgb.importance(modelo) ) 
-archivo_importancia  <- "710_importancia_001.txt"
+archivo_importancia  <- "710_importancia_LAG1_2OP_001.txt"
 
 fwrite( tb_importancia, 
         file= archivo_importancia, 
@@ -125,7 +114,7 @@ for( envios  in  c( 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500 ) )
   tb_entrega[ 1:envios, Predicted := 1L ]
 
   fwrite( tb_entrega[ , list(numero_de_cliente, Predicted)], 
-          file= paste0( "KA_710_", envios, ".csv" ),
+          file= paste0( "KA_710_LAG1_1OP_", envios, ".csv" ),
           sep= "," )
 }
 

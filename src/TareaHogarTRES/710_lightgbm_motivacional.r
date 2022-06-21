@@ -22,7 +22,7 @@ setwd("~/buckets/b1/")   #Establezco el Working Directory
 
 #cargo el dataset donde voy a entrenar
 
-dataset  <- fread("./datasets/paquete_premium_ext_721_L1_2.csv.gz", stringsAsFactors= TRUE)
+dataset  <- fread("./datasets/paquete_premium_ext_721_L1.csv.gz", stringsAsFactors= TRUE)
 
 
 #--------------------------------------
@@ -60,28 +60,19 @@ modelo  <- lgb.train( data= dtrain,
                       param= list( objective=        "binary",
                                    metric= "custom",
                                    max_bin=              31,
-                                   seed=             236087,
-                                   first_metric_only = TRUE,
-                                   boost_from_average = TRUE,
-                                   feature_pre_filter = FALSE,
-                                   verbosity = -100,
-                                   min_gain_to_split = 0,
-                                   lambda_l1 = 0,
-                                   lambda_l2 = 0,
-                                   num_iterations = 1262,
-                                   force_row_wise = TRUE,
-                                   learning_rate = 0.0100603206161176,
-                                   feature_fraction = 0.779999539394118,
-                                   min_data_in_leaf = 19086,
-                                   max_depth = -1,
-                                   num_leaves = 632,
+                                   learning_rate=         0.0300696989,
+                                   num_iterations=      567,
+                                   num_leaves=         1002,
+                                   min_data_in_leaf=   6263,
+                                   feature_fraction=      0.9100319271,
+                                   seed=             236087
                                   )
                     )
 #236087, 236107, 236111, 236129, 236143
 #--------------------------------------
 #ahora imprimo la importancia de variables
 tb_importancia  <- as.data.table( lgb.importance(modelo) ) 
-archivo_importancia  <- "710_importancia_LAG1_2OP_001.txt"
+archivo_importancia  <- "710_importancia_LAG1_prueba_001.txt"
 
 fwrite( tb_importancia, 
         file= archivo_importancia, 
@@ -108,13 +99,14 @@ setorder( tb_entrega, -prob )
 #genero archivos con los  "envios" mejores
 #deben subirse "inteligentemente" a Kaggle para no malgastar submits
 #razone usted mismo que significa la palabra "inteligentemente" en el contexto del limite de 20 submits diarias a Kaggle
+#11500 es el mejor del momento. # Score: 22.65957
 for( envios  in  c( 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500 ) )
 {
   tb_entrega[  , Predicted := 0L ]
   tb_entrega[ 1:envios, Predicted := 1L ]
 
   fwrite( tb_entrega[ , list(numero_de_cliente, Predicted)], 
-          file= paste0( "KA_710_LAG1_1OP_", envios, ".csv" ),
+          file= paste0( "KA_710_LAG1_prueba_", envios, ".csv" ),
           sep= "," )
 }
 

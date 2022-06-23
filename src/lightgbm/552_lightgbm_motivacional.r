@@ -23,10 +23,8 @@ ksemilla  <- 236087  #poner aqui la PRIMERA de sus cinco semillas
 setwd("C:\\Users\\Gonzalo\\Desktop\\MMD\\8- Mineria Aplicada a Finanzas\\Git Clone\\")   #Establezco el Working Directory
 
 #cargo el dataset donde voy a entrenar
-dataset  <- fread("C:\\Users\\Gonzalo\\Desktop\\paquete_premium.csv", stringsAsFactors= TRUE)
-dataset = dataset[1:1600000,]
+dataset  <- fread("../datasets/paquete_premium_202011.csv", stringsAsFactors= TRUE)
 
-ksemilla  <- 236087  #poner aqui la PRIMERA de sus cinco semillas
 
 
 f_dowle2 = function(DT) {
@@ -35,11 +33,7 @@ f_dowle2 = function(DT) {
 }
 
 
-#Aqui se debe poner la carpeta de la computadora local
-setwd("C:\\Users\\Gonzalo\\Desktop\\MMD\\Git Clone\\")   #Establezco el Working Directory
-
 #cargo el dataset donde voy a entrenar
-dataset  <- fread("../datasets/paquete_premium.csv", stringsAsFactors= TRUE) #_premium_202011
 # median_m = median(dataset[!is.na(get('Master_mlimitecompra')),Master_mlimitecompra])
 # median_v = median(dataset[!is.na(get('Visa_mlimitecompra')),Visa_mlimitecompra])
 # dataset[is.na(get('Master_mlimitecompra')),Master_mlimitecompra:=median_m]
@@ -94,9 +88,6 @@ modelo  <- lgb.train( data= dtrain,
                     )
 
 #aplico el modelo a los datos sin clase
-dapply  <- fread("C:\\Users\\Gonzalo\\Desktop\\datasets_paquete_premium_202101.csv")
-
-#aplico el modelo a los datos sin clase
 dapply  <- fread("../datasets/paquete_premium_202101.csv") #
 
 ### Pruebas sin sentido de Feature Eng.
@@ -120,8 +111,8 @@ entrega  <- as.data.table( list( "numero_de_cliente"= dapply[  , numero_de_clien
 #guardo el resultado
 #creo las carpetas
 dir.create( "labo/exp/",  showWarnings = FALSE ) 
-dir.create( "labo/exp/KA5520/", showWarnings = FALSE )
-setwd( "labo/exp/KA5520/" )
+dir.create( "labo/exp/prueba_rara/", showWarnings = FALSE )
+setwd( "labo/exp/prueba_rara/" )
 
 archivo_salida  <- "KA_552_best.csv"
 

@@ -10,7 +10,7 @@ experiment:
   name: "exp"
   type: "TrainingStrategy"
   tags: [ "austero", "undersampling10" ]
-  requires: [ "8120FEa" ]
+  requires: [ "8120FEb" ]
 
 
 param:
@@ -29,10 +29,10 @@ param:
   train:
     periodos: [ ]
     rango:
-      desde:  202001
-      hasta:  202009
+      desde:  202005
+      hasta:  202010
     excluir: [ 202006 ]
-    undersampling: [ {clase: "CONTINUA", prob: 0.1 }]  #ATENCION  undersampling al 10%
+    undersampling: [ {clase: "CONTINUA", prob: 0.5 }]  #ATENCION  undersampling al 10%
 
   #donde valido
   validate:
@@ -56,7 +56,7 @@ param:
   train_final:
     periodos: [ ]
     rango:
-      desde:  202001
+      desde:  202005
       hasta:  202011
     excluir: [ 202006 ]
     undersampling: [  ]

@@ -21,9 +21,30 @@ require("lightgbm")
 setwd("~/buckets/b1/")   #Establezco el Working Directory
 
 #cargo el dataset donde voy a entrenar
+dataset  <- fread("./datasets/paquete_premium.csv.gz", stringsAsFactors= TRUE)
 
-dataset  <- fread("./datasets/paquete_premium_ext_721_L1.csv.gz", stringsAsFactors= TRUE)
 
+#--------------------------------------
+
+#ordeno el dataset por  < numero_de_cliente, foto_mes > ´para calcular los lags
+setorder( dataset, numero_de_cliente, foto_mes )
+
+#creo los campos lags de orden 1
+columnas_lag  <- setdiff( colnames(dataset), c("numero_de_cliente","foto_mes","clase_ternaria") )
+nlag  <- 1      #orden del lag
+sufijo  <- "_lag1"
+dataset[ , paste0( columnas_lag, sufijo) := shift( .SD, nlag, NA, "lag"), 
+           by= numero_de_cliente, 
+           .SDcols= columnas_lag ]
+
+#creo los delta lags
+sufijodelta  <- paste0( "_delta", nlag )
+
+#uso un espantoso for para crear los delta lags
+for( vcol in columnas_lag )
+{
+  dataset[,  paste0(vcol, sufijodelta) := get( vcol)  - get(paste0( vcol, sufijo))]
+}
 
 #--------------------------------------
 
@@ -58,7 +79,6 @@ dtrain  <- lgb.Dataset( data= data.matrix(  dataset[ train==1L, campos_buenos, w
 #estos hiperparametros  salieron de una laaarga Optmizacion Bayesiana
 modelo  <- lgb.train( data= dtrain,
                       param= list( objective=        "binary",
-                                   metric= "custom",
                                    max_bin=              31,
                                    learning_rate=         0.0300696989,
                                    num_iterations=      567,
@@ -72,7 +92,7 @@ modelo  <- lgb.train( data= dtrain,
 #--------------------------------------
 #ahora imprimo la importancia de variables
 tb_importancia  <- as.data.table( lgb.importance(modelo) ) 
-archivo_importancia  <- "710_importancia_LAG1_prueba_001.txt"
+archivo_importancia  <- "710_importancia_001.txt"
 
 fwrite( tb_importancia, 
         file= archivo_importancia, 
@@ -99,14 +119,13 @@ setorder( tb_entrega, -prob )
 #genero archivos con los  "envios" mejores
 #deben subirse "inteligentemente" a Kaggle para no malgastar submits
 #razone usted mismo que significa la palabra "inteligentemente" en el contexto del limite de 20 submits diarias a Kaggle
-#11500 es el mejor del momento. # Score: 22.65957
 for( envios  in  c( 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500 ) )
 {
   tb_entrega[  , Predicted := 0L ]
   tb_entrega[ 1:envios, Predicted := 1L ]
 
   fwrite( tb_entrega[ , list(numero_de_cliente, Predicted)], 
-          file= paste0( "KA_710_LAG1_prueba_", envios, ".csv" ),
+          file= paste0( "KA_710_", envios, ".csv" ),
           sep= "," )
 }
 

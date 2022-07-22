@@ -13,7 +13,6 @@ gc()             #garbage collection
 require("data.table")
 require("lightgbm")
 
-
 #Aqui se debe poner la carpeta de la computadora local
 setwd("~/buckets/b1/")   #Establezco el Working Directory
 

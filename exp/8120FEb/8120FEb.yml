@@ -25,7 +25,7 @@ param:
   
   variablesmanuales: TRUE   #NO SE AGREGAN VARIABLES MANUALES
 
-  acumulavars: TRUE   #a lo nuevo lo va aplicando
+  acumulavars: FALSE   #a lo nuevo lo va aplicando
 
 
   #lags y sus deltas

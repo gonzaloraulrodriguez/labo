@@ -26,7 +26,7 @@ param:
 
 #crea variables {0,1}  con las hojas de un random forest, ATENCION que explota !!
   randomforest:    
-    correr:        FALSE
+    correr:        TRUE
     num.trees:        50
     max.depth:         8
     min.node.size:   500

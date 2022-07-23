@@ -7,7 +7,7 @@ googlecloud:
 
 
 experiment:
-  script: "src/completo/z993_ZZ_lightgbm_semillerio.r"
+  script: "src/completo/z992_ZZ_lightgbm_semillerio.r"
   restart: TRUE
   name: "exp"
   type: "ZZ"
@@ -17,16 +17,16 @@ experiment:
   requires:   [ "termonuclear-HTa" ]
 
 param:
-  semilla_primos:  102191 #poner aqui una semilla propia, sirve para crear los numeros primos que seran semillas
+  semilla_primos:  236087 #poner aqui una semilla propia, sirve para crear los numeros primos que seran semillas
 
-  semillerio:  50     #Uso 50 semillas, se puede aumentar para mejorar
+  semillerio:  50     #Uso 20 semillas
 
   modelos_qty:  1
   clase_train_POS:    [ "BAJA+2", "BAJA+1" ]
   clase_test_POS:     [ "BAJA+2" ]
 
   KA_start:  8000
-  KA_end:   13000
+  KA_end:   14000
   KA_step:    500
 
 
